@@ -1,5 +1,3 @@
-//cards = document.getElementsByClassName('card');
-
 function Skill(id, title, description, crd, levelMax) {
     this.id = id;
     this.title = title;
@@ -297,6 +295,244 @@ var perceptionSkills = [
     // )
 ];
 
+var strengthSkills = [
+    new Skill(
+        1,
+        "Boomstick",
+        "Specialize with shotguns and send your enemies to meet their maker. Do more damage, blow limbs off, shoot and reload faster.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Shotgun Hobo : Maybe your aim isn't so good or you just like doing a lot of damage up close and personal. Either way a hobo with a shotgun is not to be messed with. Craft quality 2 poor Shotguns, deal 10% more damage, 10% faster fire rate, and 10% faster reload. Stun enemies for 6 seconds.\nIncreases chance to dismember by 5%.\nUnlocks double barrel shotgun crafting."
+            },
+            2: {
+                "requires": { 1: 3 },
+                "Description": "Shotgun Nomad : Roaming the wastelands as a nomad have improved your abilities with shotguns. Craft quality 3 fair shotguns, deal 20% more damage, 20% faster fire rate, and 15% faster reload.\nIncreases chance to dismember by 10%."
+            },
+            3: {
+                "requires": { 1: 5 },
+                "Description": "Shotgun Pro : If shotgun meets were still a thing, you'd be hitting those clay ducks and be considered a shotgun pro. Craft quality 4 good shotguns, deal 30% more damage, 30% faster fire rate, and 20% faster reload. Stun enemies for 8 seconds."
+            },
+            4: {
+                "requires": { 1: 7 },
+                "Description": "Shotgun Master : You are now very deadly with a shotgun and considered a shotgun master and master of the shotgun. Craft quality 5 great shotguns, deal 40% more damage, 40% faster fire rate, and 25% faster reload."
+            },
+            5: {
+                "requires": { 1: 10 },
+                "Description": "Boomstick : You've ascended to the legendary status of Shotgun Messiah, as you are the last thing they see before meeting their maker. Deal 50% more damage, 50% faster fire rate, and a 30% faster reload.\nLegs shots cripple opponents."
+            }
+        },
+        5
+    ),
+    new Skill(
+        2,
+        "Pummel Pete",
+        "Specialize in knocking your foes senseless with clubs and bats.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "RoughNeck : You might not pack a punch but as a roughneck you can swing a club! Craft quality 2 poor clubs, deal 10% more damage and attacks do 40% more damage to stunned enemies. Power attacks have a 60% chance to knock foes back down.\nUnlocks baseball bat crafting."
+            },
+            2: {
+                "requires": { 1: 3 },
+                "Description": "Thug : You are making a name for yourself as a dangerous thug. Craft quality 3 fair clubs, deal 20% more damage, attacks do 80% more damage to stunned enemies and power attacks have a 70% chance to knock foes back down."
+            },
+            3: {
+                "requires": { 1: 5 },
+                "Description": "Big Leagues : You hit hard enough to be in the big leagues now. Craft quality 4 good clubs, deal 30% more damage, attacks do 120% more damage to stunned enemies and power attacks have a 80% chance to knock foes back down.\nLanding 5 successive hits in a short time causes the last blow to do 100% extra damage."
+            },
+            4: {
+                "requires": { 1: 7 },
+                "Description": "Stay Down : When you said stay down you meant it. Craft quality 5 great clubs, deal 40% more damage, attacks do 160% more damage to stunned enemies and power attacks have a 90% chance to knock foes back down. 4 successive hits in a short time causes the last blow to do 100% extra damage."
+            },
+            5: {
+                "requires": { 1: 10 },
+                "Description": "Pummel Pete : Pummel Pete once took on 50 zombies with just a club and he would be proud of you. Deal 50% more damage, attacks do 200% more damage to stunned enemies and power attacks have a 100% chance to knock foes back down. 3 successive hits in a short time causes the last blow to do 100% extra damage."
+            }
+        },
+        5
+    ),
+    new Skill(
+        3,
+        "Skull Crusher",
+        "Specialize in destroying enemies and structures with sledgehammers.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Bruiser : You are a bruiser and with a little luck can sometimes knock down geriatric zombies. Craft quality 2 poor sledgehammers and deal 10% more damage. 15% chance to knock down enemies with power attacks.\nUnlocks iron sledgehammer crafting."
+            },
+            2: {
+                "requires": { 1: 3 },
+                "Description": "Mauler : You are now a mauler but don't get too cocky yet. Craft quality 3 fair sledgehammers and deal 20% more damage. 30% chance to knock down enemies with power attacks."
+            },
+            3: {
+                "requires": { 1: 5 },
+                "Description": "Smasher : You are a certified smasher of things that get in your way. Craft quality 4 good sledgehammers and deal 30% more damage. Power attacks have a 45% chance to knock down enemies and a 20% chance to knock down nearby foes."
+            },
+            4: {
+                "requires": { 1: 7 },
+                "Description": "Bone Breaker : You have nearly perfected the craft of smashing stuff and breaking bones. Craft quality 5 great sledgehammers and deal 40% more damage. Power attacks have a 60% chance to knock down enemies and a 35% chance to knock down nearby foes."
+            },
+            5: {
+                "requires": { 1: 10 },
+                "Description": "Skull Crusher : Skull Crusher. If anyone pisses you off you have the means to crush their skull. Deal 50% more damage. Power attacks have a 75% chance to knock down enemies and a 50% chance to knock down nearby foes."
+            }
+        },
+        5
+    ),
+    new Skill(
+        4,
+        "Sexual Tyrannosaurus",
+        "Specialize in unleashing a relentless assault of blows guaranteed to leave your prey slack-jawed at your unyielding stamina.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Bench Warmer : You have graduated to bench warmer. Reduce melee and tool stamina usage by 8% and power attacks by 15%."
+            },
+            2: {
+                "requires": { 1: 3 },
+                "Description": "Athlete : You are now a bonafide athlete and getting winded doing nothing is a thing of the past. Reduce melee and tool stamina usage by 15% and power attacks by 30%.\nKilling blows grant 10 stamina."
+            },
+            3: {
+                "requires": { 1: 5 },
+                "Description": "Warrior : Nobody will disrespect a warrior. Reduce melee and tool stamina usage by 20% and power attacks by 40%.\nKilling blows grant 20 stamina."
+            },
+            4: {
+                "requires": { 1: 7 },
+                "Description": "Cage Gladiator : You are now a cage gladiator and have risen to the highest athletic prowess possible. Reduce melee and tool stamina usage by 25% and power attacks by 50%.\nKilling blows grant 30 stamina."
+            }
+        },
+        4
+    ),
+    new Skill(
+        5,
+        "Heavy Armor",
+        "Specialize in shielding yourself with iron and steel, becoming an unstoppable behemoth on the battlefield.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Tin Man : You might move a little awkward in heavy armor but you're alive to talk about it. Craft quality 2 poor heavy armor, reduce heavy armor movement and stamina penalty by 5%. Improve durability by 50%.\nUnlocks iron armor crafting."
+            },
+            2: {
+                "requires": { 1: 3 },
+                "Description": "Heavy Metal : You can take a hit! Craft quality 3 fair heavy armor, reduce heavy armor movement and stamina penalty by 10%. Improve durability by 100%."
+            },
+            3: {
+                "requires": { 1: 5 },
+                "Description": "Iron Man : Now we're talking about some serious protection. Craft quality 4 good armor, reduce heavy armor movement and stamina penalty by 17%. Improve durability by 150%."
+            },
+            4: {
+                "requires": { 1: 7 },
+                "Description": "Get Tanked : You are now a walking tank. Craft quality 5 great heavy armor, reduce heavy armor movement and stamina penalty by 25%. Improve durability by 200%."
+            }
+        },
+        4
+    ),
+    new Skill(
+        6,
+        "Pack Mule",
+        "You're a pack mule and can carry more items in your inventory without suffering movement penalties.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Disorganized : Who has time to organize their stuff perfectly? Carry three more items without being encumbered."
+            },
+            2: {
+                "requires": { 1: 2 },
+                "Description": "Bag Lady : You know it's in there somewhere. Carry an additional three more items without being encumbered."
+            },
+            3: {
+                "requires": { 1: 3 },
+                "Description": "Neat and Tidy : You know exactly where everything is. Carry four additional items without being encumbered."
+            },
+            4: {
+                "requires": { 1: 4 },
+                "Description": "Shipshape : You just passed inspection, private. Carry four more items without being encumbered."
+            },
+            5: {
+                "requires": { 1: 5 },
+                "Description": "Pack Mule : Now you are just showing off, you are either part mule or a strongman. Carry four more items without being encumbered."
+            }
+        },
+        5
+    ),
+    new Skill(
+        7,
+        "Master Chef",
+        "Create more filling meals with advanced benefits and learn to cook faster.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Bachelor : Cooking is not your thing but you know some basics. Unlocks basic recipes such as bacon and eggs, boiled and grilled meats, baked potatoes, cornbread, teas and coffee. Cook 10% faster."
+            },
+            2: {
+                "requires": { 1: 3 },
+                "Description": "Grandma : Just like grandma used to make, tasty hearty meals that fill you up for days. Craft steak and potatoes, meat stew, vegetable stew, blueberry pie and several pumpkin dishes. Cook 20% faster."
+            },
+            3: {
+                "requires": { 1: 5 },
+                "Description": "Short Order Cook : Learn how to make nutritious pot luck meals from canned goods. Craft Sham Chowder, Hobo Stew, Chili dogs and Fish Tacos. Wash them down with Yucca Juice Smoothies and Beer. Cook 30% faster."
+            },
+            4: {
+                "requires": { 1: 7 },
+                "Description": "Army Cook : Cook for an army by making Gumbo Stew, Shepards Pie, Spaghetti and Tuna Gravy on Toast. Cook 40% faster. Use 20% less of a recipe's main ingredients."
+            },
+            5: {
+                "requires": { 1: 10 },
+                "Description": "Master Chef : Grandpa's ass kicking recipes. Learn grandpa's secret recipes that boost stats and attributes! Cook 50% faster."
+            }
+        },
+        5
+    ),
+    new Skill(
+        8,
+        "Miner 69'er",
+        "Maximize your mining efforts by increasing tool damage to bring down rocks and trees faster.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Tool Nipper : Everyone has to start somewhere. Craft quality 2 poor tools, increase tool damage by 10% and block damage by 30% with any axe, pick, chainsaw or auger. Unlocks all iron tools like pickaxes."
+            },
+            2: {
+                "requires": { 1: 2 },
+                "Description": "Johnny Newcome : You are still a little green but you aren't fetching the muckmen blackstrap any more. Craft quality 3 fair tools, increase tool damage by 20% and block damage by 60% with any axe, pick, chainsaw or auger."
+            },
+            3: {
+                "requires": { 1: 3 },
+                "Description": "Muckman : You are now a professional miner or what they called muckmen back in the day. Craft quality 4 good tools, increase tool damage by 30% and block damage by 90% with any axe, pick, chainsaw or auger."
+            },
+            4: {
+                "requires": { 1: 5 },
+                "Description": "Boulder Buster : You can crack rock with the best of them now. Craft quality 5 great tools, increase tool damage by 40% and block damage by 120% with any axe, pick, chainsaw or auger."
+            },
+            5: {
+                "requires": { 1: 7 },
+                "Description": "Miner 69'er : You are the legendary Miner 69'r and can find the juicy center of any rock faster than a horny bullfrog. Increase damage by 50% and block damage by 150% with any axe, pick, chainsaw or auger."
+            }
+        },
+        5
+    ),
+    new Skill(
+        9,
+        "Mother Lode",
+        "Harvest more resources and bring home the mother lode.", {
+            1: {
+                "requires": { 1: 1 },
+                "Description": "Paydirt : You've found your first small vein and are envy of all the Johnny Newcomes.\nHarvest 20% more from ore, stone, terrain blocks and trees with any axe, pick, chainsaw or auger."
+            },
+            2: {
+                "requires": { 1: 2 },
+                "Description": "Main Vein : Finding more ore is starting to become second nature to you. Harvest 40% more from ore, stone, terrain blocks and trees with any axe, pick, chainsaw or auger."
+            },
+            3: {
+                "requires": { 1: 3 },
+                "Description": "Struck Gold : You've hit your stride and can probably make a decent living at this. Harvest 60% more from ore, stone, terrain blocks and trees with any axe, pick, chainsaw or auger."
+            },
+            4: {
+                "requires": { 1: 5 },
+                "Description": "Gold Mine : You are going to need an Irish baby buggy to carry all this ore. Harvest 80% more from ore, stone, terrain blocks and trees with any axe, pick, chainsaw or auger."
+            },
+            5: {
+                "requires": { 1: 7 },
+                "Description": "Mother Lode : Mining is second nature to you and you find the mother lode everywhere you go. Harvest 100% more from ore, stone, terrain blocks and trees with any axe, pick, chainsaw or auger."
+            }
+        },
+        5
+    )
+];
+
 mainStats = [
     new MainStat(
         1,
@@ -345,6 +581,53 @@ mainStats = [
             }
         }
     ),
+    new MainStat(
+        2,
+        "Strength",
+        "Strength is the measure of your muscular might. Increasing Strength raises the headshot bonus and dismemberment chance with shotguns, clubs, sledgehammers and tools.",
+        strengthSkills, {
+            1: {
+                "PointsToBuy": 1,
+                "Description": "Weakling : Everyone wants to be a bodybuilder but nobody wants to lift those heavy ass weights. Deal 200% head shot damage and have a 5% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            2: {
+                "PointsToBuy": 1,
+                "Description": "Scrawny : You might be scrawny but you have a fire inside to get big and strong. Deal 210% head shot damage and have a 10% chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            3: {
+                "PointsToBuy": 1,
+                "Description": "Milk Drinker : What is a milk drinker like you doing in the zombie apocalypse? Deal 220% head shot damage and have a 15% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            4: {
+                "PointsToBuy": 1,
+                "Description": "Softie : Your spare tire might keep you from starving but isn't helping you swing a sledgehammer. Deal 230% head shot damage and have a 20% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            5: {
+                "PointsToBuy": 1,
+                "Description": "Fit : You are fit and able to deal 240% head shot damage and have a 25% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            6: {
+                "PointsToBuy": 2,
+                "Description": "Strong : You are very strong and all the normies at the gym are envious. Deal 250% head shot damage and have a 30% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            7: {
+                "PointsToBuy": 2,
+                "Description": "Body Builder : Pumping clubs and sledgehammers has gave you some gains bro. Deal 260% head shot damage and have a 35% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            8: {
+                "PointsToBuy": 2,
+                "Description": "Power Lifter : Your massive strength is legendary. Deal 270% head shot damage and have a 40% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            9: {
+                "PointsToBuy": 3,
+                "Description": "Beast Mode : Size, strength and power are all champion level now. Deal 285% head shot damage and have a 45% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            },
+            10: {
+                "PointsToBuy": 3,
+                "Description": "Olympic Champion : You could be an Olympic champion if the apocalypse hadn't crushed that dream. Now you can just crush zombies. Deal 300% head shot damage and have a 50% greater chance to dismember with shotguns, clubs, sledgehammers and tools governed by Miner 69'er."
+            }
+        }
+    )
 ];
 
 function Player(mainstats) {
@@ -439,11 +722,69 @@ if (urlData) {
     var decodedData = decodeSkills(urlData);
 }
 
-// for (var i = 0; i < player.mainStats.length; i++) {
-//     //TODO: create cards for stats and their child skills, and add the event listener.
-//     console.log(player.mainStats[i]);
-// }
+var contentElem = document.getElementById("content");
 
+for (var i = 0; i < player.mainStats.length; i++) {
+    //TODO: create cards for stats and their child skills, and add the event listener.
+    console.log(player.mainStats[i]);
+    var card = document.createElement('div');
+    card.setAttribute("class", "card");
+
+    var cardTitle = document.createElement('h3');
+    cardTitle.innerText = player.mainStats[i].title + " - Level: " + player.mainStats[i].currentLevel;
+
+    var cardAddBtn = document.createElement('button');
+    cardAddBtn.setAttribute("class", "addBtn");
+    cardAddBtn.setAttribute("type", "button");
+    cardAddBtn.setAttribute("data-skillid", "m" + player.mainStats[i].id);
+    cardAddBtn.innerText = "+";
+
+    var cardRmBtn = document.createElement('button');
+    cardRmBtn.setAttribute("class", "removeBtn");
+    cardRmBtn.setAttribute("type", "button");
+    cardRmBtn.setAttribute("data-skillid", "m" + player.mainStats[i].id);
+    cardRmBtn.innerText = "-";
+
+    card.appendChild(cardTitle);
+    card.appendChild(cardAddBtn);
+    card.appendChild(cardRmBtn);
+
+    var cardDescription = document.createElement('p');
+    cardDescription.innerText = player.mainStats[i].description;
+
+    card.appendChild(cardDescription);
+
+    for (var property in player.mainStats[i].currentLevelDescription) {
+        var isCurrentText = "&#10066;";
+        if (parseInt(property) === player.mainStats[i].currentLevel) {
+            isCurrentText = "&#10003;";
+        }
+
+        var cardLevelItemHolder = document.createElement('div');
+        cardLevelItemHolder.setAttribute("class", "mainStatLevelHolder");
+
+        var cardLevelItem = document.createElement('div');
+        cardLevelItem.setAttribute("class", "mainStatLevelDescription");
+        cardLevelItem.innerText = player.mainStats[i].currentLevelDescription[property].Description;
+
+        var cardLevelItemCheck = document.createElement('div');
+        cardLevelItemCheck.setAttribute("class", "mainStatLevelDescriptionCheck");
+        cardLevelItemCheck.innerHTML = isCurrentText;
+
+        cardLevelItemHolder.appendChild(cardLevelItem);
+        cardLevelItemHolder.appendChild(cardLevelItemCheck);
+
+        card.appendChild(cardLevelItemHolder);
+    }
+
+    contentElem.appendChild(card);
+
+    for (var j = 0; j < player.mainStats[i].skills.length; j++) {
+        console.log(player.mainStats[i].skills[j]);
+    }
+}
+
+//TODO: on level change, update what is checked on the UI
 addBtns = document.getElementsByClassName('addBtn');
 for (var i = 0; i < addBtns.length; i++) {
     addBtns[i].addEventListener('click', (event) => {
