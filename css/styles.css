@@ -1,0 +1,75 @@
+#playerInfo {}
+
+#playerLevel {}
+
+#playerLevelSpan {}
+
+#playerPointsSpent {}
+
+#playerPointsSpentSpan {}
+
+#shareUrl {}
+
+#shareUrlSpan {}
+
+.check {
+    float: right;
+}
+
+.card {
+    width: 45%;
+    float: left;
+    padding: 20px;
+    border-right: 1px solid black;
+}
+
+.card h3 {
+    width: 45%;
+    float: left;
+}
+
+.card p {
+    float: left;
+    width: 45%
+}
+
+.addBtn {
+    float: right;
+}
+
+.removeBtn {
+    float: right;
+}
+
+.mainStatLevelHolder {
+    clear: both;
+}
+
+.mainStatLevelDescription {
+    float: left;
+    width: 95%;
+    padding-bottom: 20px;
+    border-bottom: 1px solid gray;
+}
+
+.subCards {
+    width: 45%;
+    float: left;
+    padding: 20px;
+}
+
+.subCard {
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+}
+
+.subCard h3 {
+    width: 45%;
+    float: left;
+}
+
+.skillLevelHolder {
+    clear: both;
+}
+
+.skillLevelDescription {}

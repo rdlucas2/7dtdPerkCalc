@@ -759,6 +759,26 @@ if (urlData) {
 
 var contentElem = document.getElementById("content");
 
+var playerInfo = document.createElement('div');
+playerInfo.setAttribute('id', 'playerInfo');
+contentElem.appendChild(playerInfo);
+
+var playerLevel = document.createElement('div');
+playerLevel.setAttribute('id', 'playerLevel');
+playerLevel.innerHTML = "Player Level: <span id=\"playerLevelSpan\">" + player.currentLevel() + "</span> (Assumes starting quests are complete at level 1)";
+
+var playerPointsSpent = document.createElement('div');
+playerPointsSpent.setAttribute('id', 'playerPointsSpent');
+playerPointsSpent.innerHTML = "Points Spent: <span id=\"playerPointsSpentSpan\">" + player.pointsUsed + "</span>";
+
+var shareUrl = document.createElement('div');
+shareUrl.setAttribute('id', 'shareUrl');
+shareUrl.innerHTML = "Share Url: <span id=\"shareUrlSpan\">" + encodeSkills(player) + "</span>";
+
+playerInfo.appendChild(playerLevel);
+playerInfo.appendChild(playerPointsSpent);
+playerInfo.appendChild(shareUrl);
+
 for (var i = 0; i < player.mainStats.length; i++) {
     //TODO: create cards for stats and their child skills, and add the event listener.
     console.log(player.mainStats[i]);
@@ -815,6 +835,10 @@ for (var i = 0; i < player.mainStats.length; i++) {
 
     contentElem.appendChild(card);
 
+    var subCards = document.createElement('div');
+    subCards.setAttribute('class', 'subCards');
+    contentElem.appendChild(subCards);
+
     for (var j = 0; j < player.mainStats[i].skills.length; j++) {
         console.log(player.mainStats[i].skills[j]);
         var subCard = document.createElement('div');
@@ -868,7 +892,7 @@ for (var i = 0; i < player.mainStats.length; i++) {
             subCard.appendChild(subCardLevelItemHolder);
         }
 
-        contentElem.appendChild(subCard);
+        subCards.appendChild(subCard);
     }
 }
 
@@ -879,8 +903,9 @@ for (var i = 0; i < addBtns.length; i++) {
         var targetElement = event.target || event.srcElement;
         var dataskill = targetElement.getAttribute("data-skillid");
         var isMainStat = dataskill[0] === "m";
-        var id = parseInt(dataskill[1]);
+        var id = null;
         if (isMainStat) {
+            id = parseInt(dataskill.replace('m', ''));
             var stat = player.getMainStat(id);
             if (stat.currentLevel < stat.levelMax) {
                 stat.currentLevel++;
@@ -889,6 +914,7 @@ for (var i = 0; i < addBtns.length; i++) {
             }
             console.log(stat);
         } else {
+            id = parseInt(dataskill.replace('s', '').split('-')[0]);
             //is a skill:
             var parentId = parseInt(dataskill.split('-')[1][1]);
             var skill = player.getSkill(parentId, id);
@@ -901,7 +927,9 @@ for (var i = 0; i < addBtns.length; i++) {
             }
             console.log(skill);
         }
-        player.currentLevel();
+        document.getElementById('playerLevelSpan').innerText = player.currentLevel();
+        document.getElementById('playerPointsSpentSpan').innerText = player.pointsUsed;
+        document.getElementById('shareUrlSpan').innerText = encodeSkills(player);
     });
 }
 
@@ -911,8 +939,9 @@ for (var i = 0; i < removeBtns.length; i++) {
         var targetElement = event.target || event.srcElement;
         var dataskill = targetElement.getAttribute("data-skillid");
         var isMainStat = dataskill[0] === "m";
-        var id = parseInt(dataskill[1]);
+        var id = null;
         if (isMainStat) {
+            id = parseInt(dataskill.replace('m', ''));
             var stat = player.getMainStat(id);
             //if player has a skill point that requires a certain level, don't let them remove
             var playerCanRemove = true;
@@ -933,6 +962,7 @@ for (var i = 0; i < removeBtns.length; i++) {
             console.log(stat);
         } else {
             //is a skill:
+            id = parseInt(dataskill.replace('s', '').split('-')[0]);
             var parentId = parseInt(dataskill.split('-')[1][1]);
             var skill = player.getSkill(parentId, id);
             if (skill.currentLevel > 0) {
@@ -942,6 +972,8 @@ for (var i = 0; i < removeBtns.length; i++) {
             }
             console.log(skill);
         }
-        player.currentLevel();
+        document.getElementById('playerLevelSpan').innerText = player.currentLevel();
+        document.getElementById('playerPointsSpentSpan').innerText = player.pointsUsed;
+        document.getElementById('shareUrlSpan').innerText = encodeSkills(player);
     });
 }
