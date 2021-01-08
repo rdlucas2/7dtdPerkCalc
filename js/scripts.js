@@ -714,12 +714,37 @@ function decodeSkills(urlData) {
     console.log(player);
 }
 
-function findMainStatLevelDescriptionCheck(id) {
-    var mainStatLevelDescriptionChecks = document.getElementsByClassName('mainStatLevelDescriptionCheck');
-    for (var i = 0; i < mainStatLevelDescriptionChecks.length; i++) {
-        if (mainStatLevelDescriptionChecks[i].getAttribute("data-skillid") === id) {
-
-            break;
+function updateCheck(mainId, skillId, currentLevel) {
+    var checks = document.getElementsByClassName('check');
+    for (var i = 0; i < checks.length; i++) {
+        var props = checks[i].getAttribute("data-skillid").split('-');
+        var m = null;
+        var s = null;
+        var level = null;
+        if (props[0][0] === 'm') {
+            m = parseInt(props[0].replace('m', ''));
+            level = parseInt(props[1].replace('l', ''));
+        } else {
+            s = parseInt(props[0].replace('s', ''));
+            m = parseInt(props[1].replace('m', ''));
+            level = parseInt(props[2].replace('l', ''));
+        }
+        if (skillId === null && s === null) {
+            if (m === mainId) {
+                checks[i].innerHTML = "&#10066;";
+            }
+            if (m === mainId && level === currentLevel) {
+                checks[i].innerHTML = "&#10003;";
+                checks[i].parentElement.parentElement.children[0].children[0].innerText = currentLevel;
+            }
+        } else {
+            if (m === mainId && s === skillId) {
+                checks[i].innerHTML = "&#10066;";
+            }
+            if (m === mainId && s === skillId && level === currentLevel) {
+                checks[i].innerHTML = "&#10003;";
+                checks[i].parentElement.parentElement.children[0].children[0].innerText = currentLevel;
+            }
         }
     }
 }
@@ -741,7 +766,7 @@ for (var i = 0; i < player.mainStats.length; i++) {
     card.setAttribute("class", "card");
 
     var cardTitle = document.createElement('h3');
-    cardTitle.innerText = player.mainStats[i].title + " - Level: " + player.mainStats[i].currentLevel;
+    cardTitle.innerHTML = player.mainStats[i].title + " - Level: <span>" + player.mainStats[i].currentLevel + "</span>";
 
     var cardAddBtn = document.createElement('button');
     cardAddBtn.setAttribute("class", "addBtn");
@@ -778,8 +803,8 @@ for (var i = 0; i < player.mainStats.length; i++) {
         cardLevelItem.innerText = player.mainStats[i].currentLevelDescription[property].Description;
 
         var cardLevelItemCheck = document.createElement('div');
-        cardLevelItemCheck.setAttribute("class", "mainStatLevelDescriptionCheck");
-        cardLevelItemCheck.setAttribute("data-skillid", "m" + player.mainStats[i].id);
+        cardLevelItemCheck.setAttribute("class", "check");
+        cardLevelItemCheck.setAttribute("data-skillid", "m" + player.mainStats[i].id + "-l" + property);
         cardLevelItemCheck.innerHTML = isCurrentText;
 
         cardLevelItemHolder.appendChild(cardLevelItem);
@@ -792,6 +817,58 @@ for (var i = 0; i < player.mainStats.length; i++) {
 
     for (var j = 0; j < player.mainStats[i].skills.length; j++) {
         console.log(player.mainStats[i].skills[j]);
+        var subCard = document.createElement('div');
+        subCard.setAttribute('class', 'subCard');
+
+        var subCardTitle = document.createElement('h3');
+        subCardTitle.innerHTML = player.mainStats[i].skills[j].title + " - Level: <span>" + player.mainStats[i].skills[j].currentLevel + "</span>";
+
+        var subCardAddBtn = document.createElement('button');
+        subCardAddBtn.setAttribute("class", "addBtn");
+        subCardAddBtn.setAttribute("type", "button");
+        subCardAddBtn.setAttribute("data-skillid", "s" + player.mainStats[i].skills[j].id + "-m" + player.mainStats[i].id);
+        subCardAddBtn.innerText = "+";
+
+        var subCardRmBtn = document.createElement('button');
+        subCardRmBtn.setAttribute("class", "removeBtn");
+        subCardRmBtn.setAttribute("type", "button");
+        subCardRmBtn.setAttribute("data-skillid", "s" + player.mainStats[i].skills[j].id + "-m" + player.mainStats[i].id);
+        subCardRmBtn.innerText = "-";
+
+        subCard.appendChild(subCardTitle);
+        subCard.appendChild(subCardAddBtn);
+        subCard.appendChild(subCardRmBtn);
+
+        var subCardDescription = document.createElement('p');
+        subCardDescription.innerText = player.mainStats[i].skills[j].description;
+
+        subCard.appendChild(subCardDescription);
+
+        for (var property in player.mainStats[i].skills[j].crd) {
+            var isCurrentText = "&#10066;";
+            if (parseInt(property) === player.mainStats[i].skills[j].currentLevel) {
+                isCurrentText = "&#10003;";
+            }
+
+            var subCardLevelItemHolder = document.createElement('div');
+            subCardLevelItemHolder.setAttribute("class", "skillLevelHolder");
+
+            var subCardLevelItem = document.createElement('div');
+            subCardLevelItem.setAttribute("class", "skillLevelDescription");
+            subCardLevelItem.innerText = player.mainStats[i].skills[j].crd[property].Description;
+
+            var subCardLevelItemCheck = document.createElement('div');
+            subCardLevelItemCheck.setAttribute("class", "check");
+            subCardLevelItemCheck.setAttribute("data-skillid", "s" + player.mainStats[i].skills[j].id + "-m" + player.mainStats[i].id + "-l" + property);
+            subCardLevelItemCheck.innerHTML = isCurrentText;
+
+            subCardLevelItemHolder.appendChild(subCardLevelItem);
+            subCardLevelItemHolder.appendChild(subCardLevelItemCheck);
+
+            subCard.appendChild(subCardLevelItemHolder);
+        }
+
+        contentElem.appendChild(subCard);
     }
 }
 
@@ -808,6 +885,7 @@ for (var i = 0; i < addBtns.length; i++) {
             if (stat.currentLevel < stat.levelMax) {
                 stat.currentLevel++;
                 player.pointsUsed = player.pointsUsed + stat.cost(player.currentLevel());
+                updateCheck(stat.id, null, stat.currentLevel);
             }
             console.log(stat);
         } else {
@@ -819,6 +897,7 @@ for (var i = 0; i < addBtns.length; i++) {
             if ((skill.currentLevel < skill.levelMax) && playerCanUnlock) {
                 skill.currentLevel++;
                 player.pointsUsed++;
+                updateCheck(parentId, skill.id, skill.currentLevel);
             }
             console.log(skill);
         }
@@ -849,6 +928,7 @@ for (var i = 0; i < removeBtns.length; i++) {
             if ((stat.currentLevel > 1) && playerCanRemove) {
                 stat.currentLevel--;
                 player.pointsUsed = player.pointsUsed - stat.cost(player.currentLevel());
+                updateCheck(stat.id, null, stat.currentLevel);
             }
             console.log(stat);
         } else {
@@ -858,6 +938,7 @@ for (var i = 0; i < removeBtns.length; i++) {
             if (skill.currentLevel > 0) {
                 skill.currentLevel--;
                 player.pointsUsed--;
+                updateCheck(parentId, skill.id, skill.currentLevel);
             }
             console.log(skill);
         }
