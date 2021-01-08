@@ -714,6 +714,16 @@ function decodeSkills(urlData) {
     console.log(player);
 }
 
+function findMainStatLevelDescriptionCheck(id) {
+    var mainStatLevelDescriptionChecks = document.getElementsByClassName('mainStatLevelDescriptionCheck');
+    for (var i = 0; i < mainStatLevelDescriptionChecks.length; i++) {
+        if (mainStatLevelDescriptionChecks[i].getAttribute("data-skillid") === id) {
+
+            break;
+        }
+    }
+}
+
 player = new Player(mainStats);
 
 console.log(encodeSkills(player));
@@ -769,6 +779,7 @@ for (var i = 0; i < player.mainStats.length; i++) {
 
         var cardLevelItemCheck = document.createElement('div');
         cardLevelItemCheck.setAttribute("class", "mainStatLevelDescriptionCheck");
+        cardLevelItemCheck.setAttribute("data-skillid", "m" + player.mainStats[i].id);
         cardLevelItemCheck.innerHTML = isCurrentText;
 
         cardLevelItemHolder.appendChild(cardLevelItem);
