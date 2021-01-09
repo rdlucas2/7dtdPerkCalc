@@ -12,64 +12,28 @@
 
 #shareUrlSpan {}
 
-.check {
-    float: right;
-}
+.check {}
 
-.card {
-    width: 45%;
-    float: left;
-    padding: 20px;
-    border-right: 1px solid black;
-}
+.card {}
 
-.card h3 {
-    width: 45%;
-    float: left;
-}
+.card h3 {}
 
-.card p {
-    float: left;
-    width: 45%
-}
+.card p {}
 
-.addBtn {
-    float: right;
-}
+.addBtn {}
 
-.removeBtn {
-    float: right;
-}
+.removeBtn {}
 
-.mainStatLevelHolder {
-    clear: both;
-}
+.mainStatLevelHolder {}
 
-.mainStatLevelDescription {
-    float: left;
-    width: 95%;
-    padding-bottom: 20px;
-    border-bottom: 1px solid gray;
-}
+.mainStatLevelDescription {}
 
-.subCards {
-    width: 45%;
-    float: left;
-    padding: 20px;
-}
+.subCards {}
 
-.subCard {
-    padding-bottom: 20px;
-    border-bottom: 1px solid black;
-}
+.subCard {}
 
-.subCard h3 {
-    width: 45%;
-    float: left;
-}
+.subCard h3 {}
 
-.skillLevelHolder {
-    clear: both;
-}
+.skillLevelHolder {}
 
 .skillLevelDescription {}
