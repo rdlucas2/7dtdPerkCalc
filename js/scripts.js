@@ -1603,7 +1603,7 @@ function updateCheck(mainId, skillId, currentLevel) {
             }
             if (m === mainId && level === currentLevel) {
                 checks[i].innerHTML = "<span>&#10003;</span>";
-                checks[i].parentElement.parentElement.children[0].children[1].innerText = currentLevel;
+                checks[i].parentElement.parentElement.children[0].children[0].children[0].innerText = currentLevel;
             }
         } else {
             if (m === mainId && s === skillId) {
@@ -1611,11 +1611,11 @@ function updateCheck(mainId, skillId, currentLevel) {
             }
             if (m === mainId && s === skillId && level === currentLevel) {
                 checks[i].innerHTML = "<span>&#10003;</span>";
-                checks[i].parentElement.parentElement.children[0].children[1].innerText = currentLevel;
+                checks[i].parentElement.parentElement.children[0].children[0].children[0].innerText = currentLevel;
             }
             if (m === mainId && s === skillId && currentLevel === 0) {
                 checks[i].innerHTML = "<span>&#10066;</span>";
-                checks[i].parentElement.parentElement.children[0].children[1].innerText = currentLevel;
+                checks[i].parentElement.parentElement.children[0].children[0].children[0].innerText = currentLevel;
             }
         }
     }
