@@ -1530,6 +1530,9 @@ Player.prototype.removeStat = function(id) {
 
 Player.prototype.addSkill = function(parentId, id) {
     var skill = this.getSkill(parentId, id);
+    if (skill.currentLevel + 1 > skill.levelMax) {
+        return false;
+    }
     var playerCanUnlock = this.getMainStat(parentId).currentLevel >= skill.crd[skill.currentLevel + 1].requires[parentId];
     if ((skill.currentLevel < skill.levelMax) && playerCanUnlock) {
         skill.currentLevel++;
