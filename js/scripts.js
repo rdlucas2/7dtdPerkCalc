@@ -1502,7 +1502,7 @@ Player.prototype.addStat = function(id) {
     var stat = this.getMainStat(id);
     if (stat.currentLevel < stat.levelMax) {
         stat.currentLevel++;
-        this.pointsUsed = this.pointsUsed + stat.cost(this.currentLevel());
+        this.pointsUsed = this.pointsUsed + stat.cost(stat.currentLevel);
         return true;
     }
     return false;
@@ -1521,8 +1521,8 @@ Player.prototype.removeStat = function(id) {
         }
     }
     if ((stat.currentLevel > 1) && playerCanRemove) {
+        this.pointsUsed = this.pointsUsed - stat.cost(stat.currentLevel);
         stat.currentLevel--;
-        this.pointsUsed = this.pointsUsed - stat.cost(this.currentLevel());
         return true;
     }
     return false;
@@ -1608,6 +1608,10 @@ function updateCheck(mainId, skillId, currentLevel) {
             }
             if (m === mainId && s === skillId && level === currentLevel) {
                 checks[i].innerHTML = "&#10003;";
+                checks[i].parentElement.parentElement.children[0].children[0].innerText = currentLevel;
+            }
+            if (m === mainId && s === skillId && currentLevel === 0) {
+                checks[i].innerHTML = "&#10066;";
                 checks[i].parentElement.parentElement.children[0].children[0].innerText = currentLevel;
             }
         }
