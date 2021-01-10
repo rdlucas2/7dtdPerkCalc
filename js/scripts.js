@@ -1793,7 +1793,7 @@ function render() {
 }
 
 function bindEvents() {
-    addBtns = document.getElementsByClassName('addBtn');
+    var addBtns = document.getElementsByClassName('addBtn');
     for (var i = 0; i < addBtns.length; i++) {
         addBtns[i].addEventListener('click', (event) => {
             var targetElement = event.target || event.srcElement;
@@ -1822,7 +1822,7 @@ function bindEvents() {
         });
     }
 
-    removeBtns = document.getElementsByClassName('removeBtn');
+    var removeBtns = document.getElementsByClassName('removeBtn');
     for (var i = 0; i < removeBtns.length; i++) {
         removeBtns[i].addEventListener('click', (event) => {
             var targetElement = event.target || event.srcElement;
