@@ -231,7 +231,7 @@ var perceptionSkills = [
     new Skill(
         9,
         "Treasure Hunter",
-        "", {
+        "Become one of the greatest treasure hunters of all time learning tricks that would even make Blackbeard envious.", {
             1: {
                 "requires": { 1: 1 },
                 "Description": "Plunderer : For every 7 blocks dug up the treasure search radius is reduced by 1m. Without the perk you have to dig up 10 blocks each. Find 10% more items in buried treasure."
@@ -251,7 +251,7 @@ var perceptionSkills = [
     new Skill(
         10,
         "Salvage Operations",
-        "", {
+        "Waste not, want not! Salvage items for more resources with a wrench, ratchet or impact driver.", {
             1: {
                 "requires": { 1: 1 },
                 "Description": "Junk Collector : Who knows what useful items can be found when tearing things apart? Craft quality 2 poor salvage tools. Deal 10% more damage, harvest 20% faster and gains 20% more resources with a wrench, ratchet or impact driver. Unlocks wrench crafting."
@@ -1599,22 +1599,22 @@ function updateCheck(mainId, skillId, currentLevel) {
         }
         if (skillId === null && s === null) {
             if (m === mainId) {
-                checks[i].innerHTML = "&#10066;";
+                checks[i].innerHTML = "<span>&#10066;</span>";
             }
             if (m === mainId && level === currentLevel) {
-                checks[i].innerHTML = "&#10003;";
+                checks[i].innerHTML = "<span>&#10003;</span>";
                 checks[i].parentElement.parentElement.children[0].children[0].innerText = currentLevel;
             }
         } else {
             if (m === mainId && s === skillId) {
-                checks[i].innerHTML = "&#10066;";
+                checks[i].innerHTML = "<span>&#10066;</span>";
             }
             if (m === mainId && s === skillId && level === currentLevel) {
-                checks[i].innerHTML = "&#10003;";
+                checks[i].innerHTML = "<span>&#10003;</span>";
                 checks[i].parentElement.parentElement.children[0].children[0].innerText = currentLevel;
             }
             if (m === mainId && s === skillId && currentLevel === 0) {
-                checks[i].innerHTML = "&#10066;";
+                checks[i].innerHTML = "<span>&#10066;</span>";
                 checks[i].parentElement.parentElement.children[0].children[0].innerText = currentLevel;
             }
         }
@@ -1651,6 +1651,9 @@ function render() {
         var card = document.createElement('div');
         card.setAttribute("class", "card");
 
+        var cardInner = document.createElement('div');
+        cardInner.setAttribute("class", "cardInner");
+
         var cardTitle = document.createElement('h3');
         cardTitle.innerHTML = player.mainStats[i].title + " - Level: <span>" + player.mainStats[i].currentLevel + "</span> / " + player.mainStats[i].levelMax;
 
@@ -1666,19 +1669,20 @@ function render() {
         cardRmBtn.setAttribute("data-skillid", "m" + player.mainStats[i].id);
         cardRmBtn.innerText = "-";
 
-        card.appendChild(cardTitle);
-        card.appendChild(cardAddBtn);
-        card.appendChild(cardRmBtn);
+        card.appendChild(cardInner);
+        cardInner.appendChild(cardTitle);
+        cardInner.appendChild(cardAddBtn);
+        cardInner.appendChild(cardRmBtn);
 
         var cardDescription = document.createElement('p');
         cardDescription.innerText = player.mainStats[i].description;
 
-        card.appendChild(cardDescription);
+        cardInner.appendChild(cardDescription);
 
         for (var property in player.mainStats[i].currentLevelDescription) {
-            var isCurrentText = "&#10066;";
+            var isCurrentText = "<span>&#10066;</span>";
             if (parseInt(property) === player.mainStats[i].currentLevel) {
-                isCurrentText = "&#10003;";
+                isCurrentText = "<span>&#10003;</span>";
             }
 
             var cardLevelItemHolder = document.createElement('div');
@@ -1758,9 +1762,9 @@ function render() {
             subCard.appendChild(subCardDescription);
 
             for (var property in player.mainStats[i].skills[j].crd) {
-                var isCurrentText = "&#10066;";
+                var isCurrentText = "<span>&#10066;</span>";
                 if (parseInt(property) === player.mainStats[i].skills[j].currentLevel) {
-                    isCurrentText = "&#10003;";
+                    isCurrentText = "<span>&#10003;</span>";
                 }
 
                 var subCardLevelItemHolder = document.createElement('div');
