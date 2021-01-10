@@ -1694,9 +1694,6 @@ function render() {
 
         var subCards = document.createElement('div');
 
-        //TODO: subcard "group" - examples: combat perks, general strength perks, etc. (the "category")
-        //make it so that
-
         subCards.setAttribute('class', 'subCards');
 
         var category = null;
