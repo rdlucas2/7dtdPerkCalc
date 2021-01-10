@@ -1638,7 +1638,9 @@ function render() {
     playerInfo.appendChild(shareUrl);
 
     for (var i = 0; i < player.mainStats.length; i++) {
-        //TODO: create cards for stats and their child skills, and add the event listener.
+        var cardGroup = document.createElement('div');
+        cardGroup.setAttribute("class", "cardGroup " + player.mainStats[i].title);
+
         var card = document.createElement('div');
         card.setAttribute("class", "card");
 
@@ -1690,15 +1692,42 @@ function render() {
             card.appendChild(cardLevelItemHolder);
         }
 
-        contentElem.appendChild(card);
-
         var subCards = document.createElement('div');
-        subCards.setAttribute('class', 'subCards');
-        contentElem.appendChild(subCards);
 
+        //TODO: subcard "group" - examples: combat perks, general strength perks, etc. (the "category")
+        //make it so that
+
+        subCards.setAttribute('class', 'subCards');
+
+        var category = null;
+        var subCardGroup = null;
         for (var j = 0; j < player.mainStats[i].skills.length; j++) {
             var subCard = document.createElement('div');
             subCard.setAttribute('class', 'subCard');
+
+            if (category === null) {
+                category = player.mainStats[i].skills[j].category.replace(/ /g, '-');
+                subCardGroup = document.createElement('div');
+                subCardGroup.setAttribute('class', 'subCardGroup ' + category);
+                subCards.appendChild(subCardGroup);
+                var groupTitle = document.createElement('h4');
+                groupTitle.setAttribute('class', 'subCardGroupTitle');
+                groupTitle.innerText = player.mainStats[i].skills[j].category;
+                subCardGroup.appendChild(groupTitle);
+            } else if (category !== player.mainStats[i].skills[j].category.replace(/ /g, '-')) {
+                subCards.appendChild(subCardGroup);
+                category = player.mainStats[i].skills[j].category.replace(/ /g, '-');
+                subCardGroup = document.createElement('div');
+                subCardGroup.setAttribute('class', 'subCardGroup ' + category);
+                var groupTitle = document.createElement('h4');
+                groupTitle.setAttribute('class', 'subCardGroupTitle');
+                groupTitle.innerText = player.mainStats[i].skills[j].category;
+                subCardGroup.appendChild(groupTitle);
+            } else if (j === player.mainStats[i].skills.length - 1) {
+                subCards.appendChild(subCardGroup);
+            }
+
+            subCardGroup.appendChild(subCard);
 
             var subCardTitle = document.createElement('h3');
             subCardTitle.innerHTML = player.mainStats[i].skills[j].title + " - Level: <span>" + player.mainStats[i].skills[j].currentLevel + "</span> / " + player.mainStats[i].skills[j].levelMax;
@@ -1747,9 +1776,11 @@ function render() {
 
                 subCard.appendChild(subCardLevelItemHolder);
             }
-
-            subCards.appendChild(subCard);
         }
+
+        cardGroup.appendChild(card);
+        cardGroup.appendChild(subCards);
+        contentElem.appendChild(cardGroup);
     }
 }
 
@@ -1770,9 +1801,7 @@ function bindEvents() {
                 }
             } else {
                 id = parseInt(dataskill.replace('s', '').split('-')[0]);
-                //is a skill:
                 var parentId = parseInt(dataskill.split('-')[1][1]);
-                //if a player doesn't have the required level in the main stat, don't let them add it
                 var skillUpdated = player.addSkill(parentId, id)
                 if (skillUpdated) {
                     var skill = player.getSkill(parentId, id);
@@ -1794,14 +1823,12 @@ function bindEvents() {
             var id = null;
             if (isMainStat) {
                 id = parseInt(dataskill.replace('m', ''));
-                //if player has a skill point that requires a certain level, don't let them remove
                 var statUpdated = player.removeStat(id);
                 if (statUpdated) {
                     var stat = player.getMainStat(id);
                     updateCheck(stat.id, null, stat.currentLevel);
                 }
             } else {
-                //is a skill:
                 id = parseInt(dataskill.replace('s', '').split('-')[0]);
                 var parentId = parseInt(dataskill.split('-')[1][1]);
                 var skillUpdated = player.removeSkill(parentId, id);
