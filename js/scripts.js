@@ -1563,7 +1563,7 @@ function encodeSkills(player) {
     return window.location.href.replace(window.location.search, "") + '?data=' + encodedData;
 }
 
-function decodeSkills(urlData) {
+function decodeSkills(urlData, player) {
     var decodedArray = urlData.split("_");
     player.pointsUsed = parseInt(decodedArray[0].replace("spent", ""));
     for (var i = 1; i < decodedArray.length - 1; i++) {
@@ -1621,7 +1621,7 @@ function updateCheck(mainId, skillId, currentLevel) {
     }
 }
 
-function render() {
+function render(player) {
     var contentElem = document.getElementById("content");
 
     var playerInfo = document.createElement('div');
@@ -1792,7 +1792,7 @@ function render() {
     }
 }
 
-function bindEvents() {
+function bindEvents(player) {
     var addBtns = document.getElementsByClassName('addBtn');
     for (var i = 0; i < addBtns.length; i++) {
         addBtns[i].addEventListener('click', (event) => {
@@ -1852,11 +1852,11 @@ function bindEvents() {
     }
 }
 
-player = new Player(mainStats);
+var player = new Player(mainStats);
 const urlParams = new URLSearchParams(window.location.search);
 const urlData = urlParams.get('data');
 if (urlData) {
-    var decodedData = decodeSkills(urlData);
+    decodeSkills(urlData, player);
 }
-render();
-bindEvents();
+render(player);
+bindEvents(player);
