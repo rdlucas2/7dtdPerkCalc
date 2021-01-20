@@ -21,6 +21,8 @@ $(function() {
     });
 });
 
+var pointsPerLevel = null;
+
 function getXml() {
     return $.ajax({
         type: "GET",
@@ -42,6 +44,11 @@ function loadLanguage(xml, csv, language) {
     //document -> progression -> attributes -> attribute (name_key, desc_key)
     //document -> progression -> skills -> skill 
     //document -> progression -> perks -> perk 
+    var mainStats = [];
+
+    pointsPerLevel = $(xml).find("level")[0].getAttribute('skill_points_per_level');
+    var maxLevel = $(xml).find("attributes")[0].getAttribute('max_level');
+
     $(xml).find("attribute").each((i, el) => {
         // // console.log(i, el);
         // // console.log(el.getAttribute('name'));
@@ -72,56 +79,82 @@ function loadLanguage(xml, csv, language) {
 
         var icon = el.getAttribute('icon');
         // // console.log(icon);
+
+        var stat = new MainStat(
+            i + 1,
+            name,
+            description, [], {},
+            maxLevel
+        );
+
+        var statObj = {};
+
+        //effect_description element
+        $(el).find('effect_description').each((j, edel) => {
+            // console.log(j, edel);
+            // console.log(edel.getAttribute('level'));
+            // console.log(edel.getAttribute('desc_key'));
+            // console.log(edel.getAttribute('long_desc_key'));
+            // console.log(csv.find((v, i, o) => v.Key === edel.getAttribute('desc_key'))[language]);
+            // console.log(csv.find((v, i, o) => v.Key === edel.getAttribute('long_desc_key'))[language]);
+
+            var statLevel = edel.getAttribute('level');
+            var statTitle = csv.find((v, i, o) => v.Key === edel.getAttribute('desc_key'))[language]
+            var statDescription = csv.find((v, i, o) => v.Key === edel.getAttribute('long_desc_key'))[language]
+            var pointsToBuy = stat.cost(statLevel);
+            statObj[statLevel] = {
+                "PointsToBuy": pointsToBuy,
+                "Description": statTitle + ' : ' + statDescription
+            };
+        });
+        stat.currentLevelDescription = statObj;
+
+        mainStats.push(stat);
     });
 
-    $(xml).find("skill").each((i, el) => {
-        // // console.log(i, el);
-        // // console.log(el.getAttribute('name'));
-        // // console.log(el.getAttribute('parent'));
-        // // console.log(el.getAttribute('name_key'));
-        // // console.log(el.getAttribute('desc_key'));
-        // // console.log(el.getAttribute('icon'));
+    // $(xml).find("skill").each((i, el) => {
+    //     // // console.log(i, el);
+    //     // // console.log(el.getAttribute('name'));
+    //     // // console.log(el.getAttribute('parent'));
+    //     // // console.log(el.getAttribute('name_key'));
+    //     // // console.log(el.getAttribute('desc_key'));
+    //     // // console.log(el.getAttribute('icon'));
 
-        //not sure whether to include books - for now ignore
-        if (el.getAttribute('parent') === 'attBooks') {
-            return;
-        }
+    //     //not sure whether to include books - for now ignore
+    //     if (el.getAttribute('parent') === 'attBooks') {
+    //         return;
+    //     }
 
-        var name = null;
-        var nameObj = csv.find((v, i, o) => v.Key === el.getAttribute('name_key'));
-        if (nameObj) {
-            // console.log(nameObj);
-            name = nameObj[language];
-            // console.log(name);
-        }
+    //     var name = null;
+    //     var nameObj = csv.find((v, i, o) => v.Key === el.getAttribute('name_key'));
+    //     if (nameObj) {
+    //         // console.log(nameObj);
+    //         name = nameObj[language];
+    //         // console.log(name);
+    //     }
 
-        var parent = null;
-        var parentObj = csv.find((v, i, o) => v.Key === el.getAttribute('parent'));
-        if (parentObj) {
-            // console.log(parentObj);
-            parent = parentObj[language];
-            // console.log(parent);
-        }
+    //     var parent = el.getAttribute('parent');
 
-        var description = null;
-        var descObj = csv.find((v, i, o) => v.Key === el.getAttribute('desc_key'));
-        if (descObj) {
-            // console.log(descObj);
-            description = descObj[language];
-            // console.log(description);
-        }
+    //     var description = null;
+    //     var descObj = csv.find((v, i, o) => v.Key === el.getAttribute('desc_key'));
+    //     if (descObj) {
+    //         // console.log(descObj);
+    //         description = descObj[language];
+    //         // console.log(description);
+    //     }
 
-        var icon = el.getAttribute('icon');
-        // console.log(icon);
-    });
+    //     var icon = el.getAttribute('icon');
+    //     // console.log(icon);
+    // });
 
+    var skills = [];
     $(xml).find("perk").each((i, el) => {
-        // // console.log(i, el);
-        // // console.log(el.getAttribute('name'));
-        // // console.log(el.getAttribute('parent'));
-        // // console.log(el.getAttribute('max_level'));
-        // // console.log(el.getAttribute('desc_key'));
-        // // console.log(el.getAttribute('long_desc_key'));
+        // console.log(i, el);
+        // console.log(el.getAttribute('name'));
+        // console.log(el.getAttribute('parent'));
+        // console.log(el.getAttribute('max_level'));
+        // console.log(el.getAttribute('desc_key'));
+        // console.log(el.getAttribute('long_desc_key'));
 
         var name = null;
         var nameObj = csv.find((v, i, o) => v.Key === el.getAttribute('name_key'));
@@ -151,17 +184,6 @@ function loadLanguage(xml, csv, language) {
             });
         }
 
-        var parent = null;
-        var parentObj = csv.find((v, i, o) => v.Key === el.getAttribute('parent'));
-        if (parentObj) {
-            if (parentObj.Type === 'perk  book') {
-                return;
-            }
-            // console.log(parentObj);
-            parent = parentObj[language];
-            // console.log(parent);
-        }
-
         var description = null;
         var descObj = csv.find((v, i, o) => v.Key === el.getAttribute('desc_key'));
         if (descObj) {
@@ -186,10 +208,68 @@ function loadLanguage(xml, csv, language) {
 
         var icon = el.getAttribute('icon');
         // console.log(icon);
+        var crd = {};
+        var counter = 0;
+        $(el).find('effect_description').each((j, edel) => {
+            // console.log(j, edel);
+            // console.log(edel.getAttribute('desc_key'));
+            // console.log(edel.getAttribute('long_desc_key'));
+            var skillLevel = j + 1;
+            // console.log(csv.find((v, i, o) => v.Key === edel.getAttribute('desc_key')));
+            var titleAttribute = csv.find((v, i, o) => v.Key === edel.getAttribute('desc_key'));
+            var skillTitle = null;
+            if (titleAttribute) {
+                skillTitle = csv.find((v, i, o) => v.Key === edel.getAttribute('desc_key'))[language];
+            }
+            var skillDescription = null;
+            var skillDescriptionCsv = csv.find((v, i, o) => v.Key === edel.getAttribute('long_desc_key'));
+            if (skillDescriptionCsv) {
+                // console.log(csv.find((v, i, o) => v.Key === edel.getAttribute('long_desc_key'))[language]);
+                skillDescription = csv.find((v, i, o) => v.Key === edel.getAttribute('long_desc_key'))[language];
+            }
+            var levelRequired = 0;
+            var requiredId = 0;
+            $(el).find('level_requirements').each((k, lvel) => {
+                if (skillLevel === parseInt(lvel.getAttribute('level'))) {
+                    levelRequired = parseInt($(lvel).find('requirement')[0].getAttribute('value'));
+                    var referencedMainStat = $(lvel).find('requirement')[0].getAttribute('progression_name');
+                    $(xml).find('attribute').each((l, att) => {
+                        if (att.getAttribute('name') === referencedMainStat) {
+                            requiredId = l + 1;
+                            return;
+                        }
+                    });
+                }
+            });
+
+            if (skillTitle && skillDescription) {
+                counter++;
+                crd[skillLevel] = {
+                    "Description": skillTitle + ' : ' + skillDescription
+                };
+                crd[skillLevel]['requires'] = {};
+                crd[skillLevel]['requires'][requiredId] = levelRequired;
+            }
+        });
+
+        var skill = new Skill(i + 1, name, description, crd, counter, el.getAttribute('parent')); //this isn't 100% accurate for category - it should be something like "Combat Skills", but right now it's just the xml
+        skills.push(skill);
     });
 
-    //TODO: populate mainStats and skills classes based on data passed in from progression.xml and Localization.csv
-    return [];
+    // console.log(skills);
+
+    for (var i = 0; i < mainStats.length; i++) {
+        for (var j = 0; j < skills.length; j++) {
+            for (var key in skills[j].crd[1]['requires']) {
+                if (parseInt(key) === mainStats[i].id) {
+                    mainStats[i].skills.push(skills[j]);
+                }
+            }
+        }
+    }
+
+    // console.log(mainStats);
+    return mainStats;
 }
 
 function Skill(id, title, description, crd, levelMax, category) {
@@ -202,14 +282,14 @@ function Skill(id, title, description, crd, levelMax, category) {
     this.category = category
 }
 
-function MainStat(id, title, description, skills, currentLevelDescription) {
+function MainStat(id, title, description, skills, currentLevelDescription, levelMax) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.currentLevel = 1;
     this.currentLevelDescription = currentLevelDescription;
     this.skills = skills;
-    this.levelMax = 10;
+    this.levelMax = levelMax;
 }
 
 MainStat.prototype.cost = function(level) {
@@ -264,7 +344,7 @@ Player.prototype.getMainStat = function(id) {
 }
 
 Player.prototype.getSkill = function(parentId, id) {
-    return this.mainStats[this.mainStats.indexOf(this.mainStats.find((x) => x.id === parentId))].skills[this.mainStats[this.mainStats.indexOf(this.mainStats.find((x) => x.id === parentId))].skills.indexOf(player.mainStats[player.mainStats.indexOf(player.mainStats.find((x) => x.id === parentId))].skills.find((y) => y.id === id))];
+    return this.mainStats[this.mainStats.indexOf(this.mainStats.find((x) => x.id === parentId))].skills[this.mainStats[this.mainStats.indexOf(this.mainStats.find((x) => x.id === parentId))].skills.indexOf(this.mainStats[this.mainStats.indexOf(this.mainStats.find((x) => x.id === parentId))].skills.find((y) => y.id === id))];
 }
 
 Player.prototype.addStat = function(id) {
@@ -337,12 +417,13 @@ function decodeSkills(urlData, player) {
     player.pointsUsed = parseInt(decodedArray[0].replace("spent", ""));
     for (var i = 1; i < decodedArray.length - 1; i++) {
         var isMainStat = decodedArray[i][0] === "m";
-        var id = parseInt(decodedArray[i][1]);
         if (isMainStat) {
+            var id = parseInt(decodedArray[i][1]);
             var stat = player.getMainStat(id);
             stat.currentLevel = parseInt(decodedArray[i].split("v")[1]);
         } else {
             //is a skill:
+            var id = parseInt(decodedArray[i].split('-')[0].replace('s', ''));
             var parentId = parseInt(decodedArray[i].split('-')[1][1]);
             var skill = player.getSkill(parentId, id);
             skill.currentLevel = parseInt(decodedArray[i].split("v")[1]);
@@ -561,7 +642,7 @@ function render(player) {
     }
 }
 
-function bindEvents() {
+function bindEvents(player) {
     var addBtns = document.getElementsByClassName('addBtn');
     for (var i = 0; i < addBtns.length; i++) {
         addBtns[i].addEventListener('click', (event) => {
