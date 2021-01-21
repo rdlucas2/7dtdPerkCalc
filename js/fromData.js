@@ -191,7 +191,7 @@ function loadLanguage(xml, csv, language) {
                 return;
             }
             // console.log(descObj);
-            description = descObj[language];
+            description = descObj[language].replace(/\\n/g, ' ');;
             // console.log(description);
         }
 
@@ -245,14 +245,23 @@ function loadLanguage(xml, csv, language) {
             if (skillTitle && skillDescription) {
                 counter++;
                 crd[skillLevel] = {
-                    "Description": skillTitle + ' : ' + skillDescription
+                    "Description": skillTitle + ' : ' + skillDescription.replace(/\\n/g, ' ')
                 };
                 crd[skillLevel]['requires'] = {};
                 crd[skillLevel]['requires'][requiredId] = levelRequired;
             }
         });
 
-        var skill = new Skill(i + 1, name, description, crd, counter, el.getAttribute('parent')); //this isn't 100% accurate for category - it should be something like "Combat Skills", but right now it's just the xml
+        var skillCategory = null;
+        var parent = el.getAttribute('parent');
+        $(xml).find('skill').each((k, skel) => {
+            if (parent === skel.getAttribute('name')) {
+                skillCategory = csv.find((v, i, o) => v.Key === skel.getAttribute('name_key'))[language];
+                return;
+            }
+        });
+
+        var skill = new Skill(i + 1, name, description, crd, counter, skillCategory); //this isn't 100% accurate for category - it should be something like "Combat Skills", but right now it's just the xml
         skills.push(skill);
     });
 
@@ -622,7 +631,7 @@ function render(player) {
 
                 var subCardLevelItem = document.createElement('div');
                 subCardLevelItem.setAttribute("class", "skillLevelDescription");
-                subCardLevelItem.innerText = player.mainStats[i].skills[j].crd[property].Description;
+                subCardLevelItem.innerText = player.mainStats[i].skills[j].crd[property].Description; //.replace(/\\n/g, ' ').replace(/\n/g, ' ');
 
                 var subCardLevelItemCheck = document.createElement('div');
                 subCardLevelItemCheck.setAttribute("class", "check");
