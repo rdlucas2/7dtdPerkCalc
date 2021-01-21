@@ -1,4 +1,22 @@
+var player = null;
+
 $(function() {
+    load('english');
+    $('select').on('change', function() {
+        $('#loader').show();
+        $('#content').hide();
+        var data = null
+        if (player) {
+            var tmp = encodeSkills(player);
+            console.log(tmp);
+            var params = new URLSearchParams('?' + tmp.split('?')[1]);
+            data = params.get('data');
+        }
+        load(this.value, data);
+    });
+});
+
+function load(language, existingData) {
     $.when(getXml(), getCsv()).done((x, c) => {
         // // console.log(x);
         // // console.log(c);
@@ -8,18 +26,22 @@ $(function() {
 
         // // console.log(xml);
         // // console.log(csv);
-        var mainStats = loadLanguage(xml, csv, 'english');
+        var mainStats = loadLanguage(xml, csv, language);
 
-        var player = new Player(mainStats);
+        player = new Player(mainStats);
         const urlParams = new URLSearchParams(window.location.search);
         const urlData = urlParams.get('data');
-        if (urlData) {
+        if (existingData) {
+            decodeSkills(existingData, player);
+        } else if (urlData) {
             decodeSkills(urlData, player);
         }
         render(player);
         bindEvents(player);
+        $('#loader').hide();
+        $('#content').show();
     });
-});
+}
 
 var pointsPerLevel = null;
 
@@ -483,6 +505,7 @@ function updateCheck(mainId, skillId, currentLevel) {
 
 function render(player) {
     var contentElem = document.getElementById("content");
+    contentElem.innerHTML = '';
 
     var playerInfo = document.createElement('div');
     playerInfo.setAttribute('id', 'playerInfo');
