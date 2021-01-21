@@ -301,6 +301,7 @@ function MainStat(id, title, description, skills, currentLevelDescription, level
     this.levelMax = levelMax;
 }
 
+//TODO: this probably needs to come from the xml too
 MainStat.prototype.cost = function(level) {
     if (level < 6) {
         return 1;
